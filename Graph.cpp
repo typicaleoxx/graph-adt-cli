@@ -221,7 +221,10 @@ void Graph::eraseVertex(string v) {
         adjList.erase(remove_if(adjList.begin(), adjList.end(),
             [vertex](const pair<Vertex*, double>& p) { return p.first == vertex; }),
             adjList.end());
-        
+
+        // remove edge from the other vertex's incident edge list before deleting
+        other->removeIncidentEdge(edge);
+
         // remove edge from edge list
         edgeList.erase(remove(edgeList.begin(), edgeList.end(), edge), edgeList.end());
         delete edge;
@@ -292,12 +295,10 @@ Edge* Graph::findEdge(Vertex* v1, Vertex* v2) {
 vector<Edge*> Graph::incidentEdges(string v) {
     vector<Edge*> result;
     
-    // validate vertex exists in the graph
     if (vertexMap.find(v) == vertexMap.end()) {
-        cerr << "error: vertex not found" << endl;
         return result;
     }
-    
+
     // return all edges from the vertex's incident edge list
     Vertex* vertex = vertexMap[v];
     return vertex->incidentEdges();
