@@ -49,6 +49,15 @@ public:
     
     // find an edge between two vertices and return it or null
     Edge* findEdge(Vertex* v1, Vertex* v2);
+    
+    // return all edges connected to a vertex
+    vector<Edge*> incidentEdges(string v);
+    
+    // check if two vertices are directly connected as neighbors
+    bool isAdjacentTo(string v, string w);
+    
+    // find a path between two vertices using breadth first search
+    vector<string> findPath(string start, string end);
 };
 
 #endif
