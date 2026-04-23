@@ -12,6 +12,12 @@
 
 // parse input file and create vertex and edge objects then build adjacency list
 Graph::Graph(string filename) {
+    // validate filename is not empty
+    if (filename.empty()) {
+        cerr << "error: filename cannot be empty" << endl;
+        return;
+    }
+    
     ifstream inputFile(filename);
     
     // check if file opened successfully
@@ -22,20 +28,48 @@ Graph::Graph(string filename) {
     
     // read first line and create vertex objects for each location
     string firstLine;
-    getline(inputFile, firstLine);
+    if (!getline(inputFile, firstLine)) {
+        cerr << "error: file is empty or cannot be read" << endl;
+        inputFile.close();
+        return;
+    }
+    
     stringstream vertexStream(firstLine);
     string vertexName;
+    int vertexCount = 0;
     
     while (vertexStream >> vertexName) {
+        // validate vertex name is not empty
+        if (vertexName.empty()) {
+            cerr << "error: empty vertex name found" << endl;
+            continue;
+        }
+        
+        // check for duplicate vertices
+        if (vertexMap.find(vertexName) != vertexMap.end()) {
+            cerr << "error: duplicate vertex name " << vertexName << endl;
+            continue;
+        }
+        
         // create new vertex object and store it in both list and map
         Vertex* newVertex = new Vertex(vertexName);
         vertexList.push_back(newVertex);
         vertexMap[vertexName] = newVertex;
+        vertexCount++;
+    }
+    
+    // validate at least one vertex was read
+    if (vertexCount == 0) {
+        cerr << "error: no vertices found in file" << endl;
+        inputFile.close();
+        return;
     }
     
     // read remaining lines and create edge objects with weights
     string edgeLine;
+    int lineNumber = 1;
     while (getline(inputFile, edgeLine)) {
+        lineNumber++;
         if (edgeLine.empty()) continue;
         
         stringstream edgeStream(edgeLine);
@@ -43,19 +77,45 @@ Graph::Graph(string filename) {
         double weight;
         
         // parse vertex names and weight from the line
-        edgeStream >> v1Name >> v2Name >> weight;
+        if (!(edgeStream >> v1Name >> v2Name >> weight)) {
+            cerr << "error: invalid edge format at line " << lineNumber << endl;
+            continue;
+        }
+        
+        // validate edge weight is positive
+        if (weight < 0) {
+            cerr << "error: negative weight not allowed at line " << lineNumber << endl;
+            continue;
+        }
         
         // find vertices and create edge object connecting them
-        if (vertexMap.find(v1Name) != vertexMap.end() && vertexMap.find(v2Name) != vertexMap.end()) {
-            Vertex* v1 = vertexMap[v1Name];
-            Vertex* v2 = vertexMap[v2Name];
-            Edge* newEdge = new Edge(v1, v2, weight);
-            edgeList.push_back(newEdge);
-            
-            // add edge to both vertices incident edge lists
-            v1->addIncidentEdge(newEdge);
-            v2->addIncidentEdge(newEdge);
+        if (vertexMap.find(v1Name) == vertexMap.end() || vertexMap.find(v2Name) == vertexMap.end()) {
+            cerr << "error: vertex not found in edge definition at line " << lineNumber << endl;
+            continue;
         }
+        
+        // find vertices and create edge object connecting them
+        if (vertexMap.find(v1Name) == vertexMap.end() || vertexMap.find(v2Name) == vertexMap.end()) {
+            cerr << "error: vertex not found in edge definition at line " << lineNumber << endl;
+            continue;
+        }
+        
+        Vertex* v1 = vertexMap[v1Name];
+        Vertex* v2 = vertexMap[v2Name];
+        
+        // check for duplicate edge
+        if (findEdge(v1, v2) != nullptr) {
+            cerr << "error: duplicate edge between " << v1Name << " and " << v2Name << endl;
+            continue;
+        }
+        
+        // create and add new edge
+        Edge* newEdge = new Edge(v1, v2, weight);
+        edgeList.push_back(newEdge);
+        
+        // add edge to both vertices incident edge lists
+        v1->addIncidentEdge(newEdge);
+        v2->addIncidentEdge(newEdge);
     }
     
     // build adjacency list from all edges
