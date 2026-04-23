@@ -147,10 +147,10 @@ vector<Edge*> Graph::edges() {
 void Graph::buildAdjacencyList() {
     for (Edge* edge : edgeList) {
         // get both endpoints of the edge
-        pair<Vertex*, Vertex*> endpoints = edge->getEndVertices();
+        pair<Vertex*, Vertex*> endpoints = edge->endVertices();
         Vertex* v1 = endpoints.first;
         Vertex* v2 = endpoints.second;
-        double weight = edge->getLabel();
+        double weight = **edge;
         
         // add both directions since graph is undirected
         adjacencyList[v1].push_back(make_pair(v2, weight));
@@ -194,6 +194,8 @@ void Graph::insertEdge(string v, string w, double x) {
     // update adjacency list with new edge in both directions
     adjacencyList[v1].push_back(make_pair(v2, x));
     adjacencyList[v2].push_back(make_pair(v1, x));
+    
+    cout << "Edge inserted" << endl;
 }
 
 // remove a vertex and all edges connected to it from the graph
@@ -207,11 +209,11 @@ void Graph::eraseVertex(string v) {
     Vertex* vertex = vertexMap[v];
     
     // get all incident edges before removing
-    vector<Edge*> incidentEdges = vertex->getIncidentEdges();
+    vector<Edge*> incidentEdges = vertex->incidentEdges();
     
     // remove all edges connected to this vertex
     for (Edge* edge : incidentEdges) {
-        pair<Vertex*, Vertex*> endpoints = edge->getEndVertices();
+        pair<Vertex*, Vertex*> endpoints = edge->endVertices();
         Vertex* other = (endpoints.first == vertex) ? endpoints.second : endpoints.first;
         
         // remove edge from adjacency list
@@ -232,6 +234,8 @@ void Graph::eraseVertex(string v) {
     vertexList.erase(remove(vertexList.begin(), vertexList.end(), vertex), vertexList.end());
     vertexMap.erase(v);
     delete vertex;
+    
+    cout << "Vertex removed" << endl;
 }
 
 // remove an edge between two vertices from the graph
@@ -275,7 +279,7 @@ void Graph::eraseEdge(string v, string w) {
 // search for an edge between two vertices and return it if found
 Edge* Graph::findEdge(Vertex* v1, Vertex* v2) {
     for (Edge* edge : edgeList) {
-        pair<Vertex*, Vertex*> endpoints = edge->getEndVertices();
+        pair<Vertex*, Vertex*> endpoints = edge->endVertices();
         if ((endpoints.first == v1 && endpoints.second == v2) ||
             (endpoints.first == v2 && endpoints.second == v1)) {
             return edge;
@@ -296,7 +300,7 @@ vector<Edge*> Graph::incidentEdges(string v) {
     
     // return all edges from the vertex's incident edge list
     Vertex* vertex = vertexMap[v];
-    return vertex->getIncidentEdges();
+    return vertex->incidentEdges();
 }
 
 // check if two vertices are neighbors by looking in adjacency list
@@ -379,4 +383,12 @@ vector<string> Graph::findPath(string start, string end) {
     
     // no path found between vertices
     return path;
+}
+
+// helper method to get vertex by name
+Vertex* Graph::getVertex(string name) {
+    if (vertexMap.find(name) == vertexMap.end()) {
+        return nullptr;
+    }
+    return vertexMap[name];
 }

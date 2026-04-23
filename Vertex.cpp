@@ -2,14 +2,17 @@
 #include "Edge.h"
 #include <algorithm>
 
-// Vertex.cpp - implements the vertex class methods for managing node data and connections
-
 // initialize a vertex by storing its location name
 Vertex::Vertex(string val) : value(val) {
 }
 
+// return the name of this vertex (operator*)
+string Vertex::operator*() const {
+    return value;
+}
+
 // return the name of this vertex
-string Vertex::getValue() {
+string Vertex::getValue() const {
     return value;
 }
 
@@ -19,7 +22,12 @@ void Vertex::addIncidentEdge(Edge* e) {
 }
 
 // return the collection of all edges connected to this vertex
-vector<Edge*> Vertex::getIncidentEdges() {
+vector<Edge*> Vertex::getIncidentEdges() const {
+    return incidentEdgeList;
+}
+
+// return the collection of all edges connected to this vertex (spec name)
+vector<Edge*> Vertex::incidentEdges() const {
     return incidentEdgeList;
 }
 
@@ -29,9 +37,10 @@ void Vertex::removeIncidentEdge(Edge* e) {
 }
 
 // check if another vertex is a neighbor by looking through incident edges
-bool Vertex::isAdjacentTo(Vertex* v) {
+bool Vertex::isAdjacentTo(Vertex* v) const {
+    if (v == nullptr) return false;
     for (Edge* e : incidentEdgeList) {
-        if (e->getOtherEndpoint(this) == v) {
+        if (e->opposite(this) == v) {
             return true;
         }
     }

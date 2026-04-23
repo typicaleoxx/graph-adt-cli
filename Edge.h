@@ -19,14 +19,20 @@ public:
     // create an edge connecting two vertices with a weight value
     Edge(Vertex* v1, Vertex* v2, double w);
     
+    // return the weight label of this edge (operator*)
+    double operator*() const;
+    
     // return the two vertices at the ends of this edge
-    pair<Vertex*, Vertex*> getEndVertices();
+    pair<Vertex*, Vertex*> endVertices() const;
     
     // return the other endpoint when given one endpoint
-    Vertex* getOtherEndpoint(Vertex* v);
+    Vertex* opposite(const Vertex* v) const;
     
-    // return the weight of this edge
-    double getLabel();
+    // check if this edge is adjacent to another edge
+    bool isAdjacentTo(Edge* e) const;
+    
+    // check if this edge is incident on a given vertex
+    bool isIncidentOn(Vertex* v) const;
 };
 
 #endif

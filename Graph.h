@@ -58,6 +58,9 @@ public:
     
     // find a path between two vertices using breadth first search
     vector<string> findPath(string start, string end);
+    
+    // helper method to get vertex by name
+    Vertex* getVertex(string name);
 };
 
 #endif

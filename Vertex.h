@@ -19,20 +19,26 @@ public:
     // create a vertex with a given location name
     Vertex(string val);
     
+    // return the name of this vertex (operator*)
+    string operator*() const;
+    
     // return the name of this vertex
-    string getValue();
+    string getValue() const;
     
     // add an edge connected to this vertex
     void addIncidentEdge(Edge* e);
     
     // return all edges connected to this vertex
-    vector<Edge*> getIncidentEdges();
+    vector<Edge*> getIncidentEdges() const;
+    
+    // return all edges connected to this vertex
+    vector<Edge*> incidentEdges() const;
     
     // remove an edge from this vertex's incident edge list
     void removeIncidentEdge(Edge* e);
     
     // check if another vertex is directly connected to this one
-    bool isAdjacentTo(Vertex* v);
+    bool isAdjacentTo(Vertex* v) const;
 };
 
 #endif
