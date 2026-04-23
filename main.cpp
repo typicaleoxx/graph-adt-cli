@@ -43,9 +43,15 @@ void handleIncidentEdges(Graph* graph) {
         return;
     }
     
+    // validate vertex exists before querying
+    if (graph->getVertex(vertex) == nullptr) {
+        cout << "error: vertex not found" << endl;
+        return;
+    }
+
     // get all incident edges for the vertex
     vector<Edge*> edges = graph->incidentEdges(vertex);
-    
+
     if (edges.empty()) {
         cout << "No edges found for vertex " << vertex << endl;
         return;
