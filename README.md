@@ -5,12 +5,12 @@
 This project implements a **Graph Abstract Data Type (ADT)** for an undirected weighted graph with a command-line interface for interactive graph manipulation and queries.
 
 **Implementation**: C++11 with adjacency list representation  
-**Compilation**: `make` or `g++ -std=c++11`  
 **Tested**: All 4 menu operations verified ✓
 
 ## Features Implemented
 
 ### Core Data Structures
+
 - **Vertex Class** - Represents graph nodes with incident edge tracking
 - **Edge Class** - Represents weighted connections between vertices
 - **Graph Class** - Manages vertices, edges, and graph operations
@@ -18,11 +18,13 @@ This project implements a **Graph Abstract Data Type (ADT)** for an undirected w
 ### Required Methods (Per Specification)
 
 #### Vertex
+
 - `operator*()` - Returns vertex name
 - `incidentEdges()` - Returns all connected edges
 - `isAdjacentTo(v)` - Checks if adjacent to another vertex
 
 #### Edge
+
 - `operator*()` - Returns edge weight
 - `endVertices()` - Returns pair of endpoints
 - `opposite(v)` - Returns other endpoint
@@ -30,6 +32,7 @@ This project implements a **Graph Abstract Data Type (ADT)** for an undirected w
 - `isIncidentOn(v)` - Checks if incident on a vertex
 
 #### Graph
+
 - `vertices()` - Returns all vertices
 - `edges()` - Returns all edges
 - `insertVertex(x)` - Adds a new vertex
@@ -40,17 +43,19 @@ This project implements a **Graph Abstract Data Type (ADT)** for an undirected w
 ## Building and Running
 
 ### Compile
+
 ```bash
-make              # Compile using Makefile
-make clean        # Remove compiled files
+g++ -std=c++11 -o graph_program main.cpp Graph.cpp Vertex.cpp Edge.cpp
 ```
 
 ### Run
+
 ```bash
 ./graph_program   # Start the interactive program
 ```
 
 ### Input
+
 - Enter input file name when prompted
 - File format:
   - Line 1: Space-separated vertex names
@@ -59,6 +64,7 @@ make clean        # Remove compiled files
 ## Menu Options
 
 ### Greeting
+
 ```
 Hello!
 Enter the file name: input.txt
@@ -66,6 +72,7 @@ Thank you. Your graph is ready.
 ```
 
 ### Main Menu
+
 ```
 What would you like to do?
 ------------
@@ -77,81 +84,63 @@ What would you like to do?
 ```
 
 ### Option 1: Incident Edges
+
 **Purpose**: Find all edges connected to a vertex
 
 **Input**: Vertex name
 
-**Output Format**: 
-```
-USF to Starbucks is 0.27 mi
-USF to Publix is 2.11 mi
-USF to Stadium is 1.8 mi
-```
+**Output Format**:
 
-**Test Result**: ✓ PASS
 ```
-Enter vertex name: USF
-Edges incident on USF:
 USF to Starbucks is 0.27 mi
 USF to Publix is 2.11 mi
 USF to Stadium is 1.8 mi
 ```
 
 ### Option 2: Find Path
+
 **Purpose**: Find a path between two vertices using BFS
 
 **Input**: Start vertex and end vertex
 
 **Constraints**:
+
 - Both vertices must exist
 - Start and end must be different
 - Path must contain at least 3 vertices (specification requirement)
 
 **Output Format**: `vertex1 to vertex2 to vertex3...` (vertices only, no edges)
 
-**Test Results**: 
-- ✓ PASS (3+ vertices): `USF to Starbucks to BusStop`
-- ✓ PASS (validation): Direct path rejected with "error: path must contain at least 3 vertices"
-
 ### Option 3: Insert Edge
+
 **Purpose**: Add a new weighted edge between vertices
 
-**Input**: 
+**Input**:
+
 - First vertex name
-- Second vertex name  
+- Second vertex name
 - Edge weight (positive number)
 
 **Validation**:
+
 - Both vertices must exist
 - No duplicate edges allowed
 - Weight must be positive
 
 **Output**: `Edge inserted` on success
 
-**Test Result**: ✓ PASS
-```
-Enter first vertex: Publix
-Enter second vertex: BusStop
-Enter edge weight: 5.5
-Edge inserted
-```
-
 ### Option 4: Erase Vertex
+
 **Purpose**: Remove a vertex and all its connected edges
 
 **Input**: Vertex name to remove
 
 **Output**: `Vertex removed` on success
 
-**Test Result**: ✓ PASS
-```
-Enter vertex name to erase: Stadium
-Vertex removed
-```
-
 ## Sample Input File Format
 
 **File: input.txt**
+
 ```
 USF Starbucks Publix Stadium BusStop
 USF Starbucks 0.27
@@ -167,16 +156,16 @@ Stadium BusStop 4.72
 
 ## Test Results Summary
 
-| Test Case | Input | Expected | Result |
-|-----------|-------|----------|--------|
-| Greeting | - | Hello! + Thank you message | ✓ PASS |
-| Menu Display | - | 4 options + exit | ✓ PASS |
-| Incident Edges | USF | 3 edges with format | ✓ PASS |
-| Path (2 vertices) | USF→Starbucks | Error: min 3 vertices | ✓ PASS |
-| Path (3+ vertices) | USF→BusStop | USF to Starbucks to BusStop | ✓ PASS |
-| Insert Edge | Publix-BusStop (5.5) | Edge inserted | ✓ PASS |
-| Erase Vertex | Stadium | Vertex removed | ✓ PASS |
-| Error Handling | InvalidVertex | error: vertex not found | ✓ PASS |
+| Test Case          | Input                | Expected                    | Result |
+| ------------------ | -------------------- | --------------------------- | ------ |
+| Greeting           | -                    | Hello! + Thank you message  | ✓ PASS |
+| Menu Display       | -                    | 4 options + exit            | ✓ PASS |
+| Incident Edges     | USF                  | 3 edges with format         | ✓ PASS |
+| Path (2 vertices)  | USF→Starbucks        | Error: min 3 vertices       | ✓ PASS |
+| Path (3+ vertices) | USF→BusStop          | USF to Starbucks to BusStop | ✓ PASS |
+| Insert Edge        | Publix-BusStop (5.5) | Edge inserted               | ✓ PASS |
+| Erase Vertex       | Stadium              | Vertex removed              | ✓ PASS |
+| Error Handling     | InvalidVertex        | error: vertex not found     | ✓ PASS |
 
 ## Code Quality
 
@@ -194,14 +183,13 @@ Stadium BusStop 4.72
 ├── Vertex.h / Vertex.cpp      # Vertex representation
 ├── Edge.h / Edge.cpp          # Edge representation
 ├── main.cpp                   # Interactive menu
-├── Makefile                   # Build configuration
-├── input.txt                  # Sample test data
-└── README.md                  # This file
+└── input.txt                  # Sample test data
 ```
 
 ## Specification Compliance
 
 This implementation fully matches the assignment specification PP4:
+
 - ✓ Undirected weighted graph
 - ✓ Adjacency list representation
 - ✓ Required class methods implemented
@@ -214,6 +202,9 @@ This implementation fully matches the assignment specification PP4:
 ## Running Tests
 
 ```bash
+# First compile
+g++ -std=c++11 -o graph_program main.cpp Graph.cpp Vertex.cpp Edge.cpp
+
 # Test greeting and menu
 echo -e "input.txt\n0" | ./graph_program
 
