@@ -1,27 +1,39 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-// Graph.h - contains graph class for parsing input file and storing raw vertex and edge data
+// Graph.h - manages graph structure with vertex and edge objects plus adjacency relationships
 
 #include <vector>
 #include <string>
+#include <map>
 
 using namespace std;
 
+class Vertex;
+class Edge;
+
 class Graph {
 private:
-    vector<string> vertexList;
-    vector<tuple<string, string, double>> edgeList;
+    vector<Vertex*> vertexList;
+    vector<Edge*> edgeList;
+    map<string, Vertex*> vertexMap;
+    map<Vertex*, vector<pair<Vertex*, double>>> adjacencyList;
 
 public:
-    // constructor that opens file and extracts raw vertex and edge information
+    // constructor that reads file and builds complete graph structure with objects
     Graph(string filename);
     
-    // return list of all vertex names
-    vector<string> getVertices();
+    // destructor that frees all allocated memory
+    ~Graph();
     
-    // return list of all edges as (vertex1, vertex2, weight) tuples
-    vector<tuple<string, string, double>> getEdges();
+    // return collection of all vertex objects in the graph
+    vector<Vertex*> vertices();
+    
+    // return collection of all edge objects in the graph
+    vector<Edge*> edges();
+    
+    // build adjacency list connections from all edges
+    void buildAdjacencyList();
 };
 
 #endif
