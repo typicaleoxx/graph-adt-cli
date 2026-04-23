@@ -34,6 +34,21 @@ public:
     
     // build adjacency list connections from all edges
     void buildAdjacencyList();
+    
+    // add a new vertex to the graph if it does not already exist
+    void insertVertex(string x);
+    
+    // add a new edge between two existing vertices with a weight
+    void insertEdge(string v, string w, double x);
+    
+    // remove a vertex and all its connected edges from the graph
+    void eraseVertex(string v);
+    
+    // remove an edge between two vertices from the graph
+    void eraseEdge(string v, string w);
+    
+    // find an edge between two vertices and return it or null
+    Edge* findEdge(Vertex* v1, Vertex* v2);
 };
 
 #endif
