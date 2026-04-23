@@ -5,6 +5,8 @@
 #include <sstream>
 #include <iostream>
 #include <algorithm>
+#include <queue>
+#include <set>
 
 // Graph.cpp - implements graph construction, modification operations like insert and erase for vertices and edges
 
@@ -223,4 +225,101 @@ Edge* Graph::findEdge(Vertex* v1, Vertex* v2) {
         }
     }
     return nullptr;
+}
+
+// find all edges connected to a specific vertex
+vector<Edge*> Graph::incidentEdges(string v) {
+    vector<Edge*> result;
+    
+    // validate vertex exists in the graph
+    if (vertexMap.find(v) == vertexMap.end()) {
+        cerr << "error: vertex not found" << endl;
+        return result;
+    }
+    
+    // return all edges from the vertex's incident edge list
+    Vertex* vertex = vertexMap[v];
+    return vertex->getIncidentEdges();
+}
+
+// check if two vertices are neighbors by looking in adjacency list
+bool Graph::isAdjacentTo(string v, string w) {
+    // validate both vertices exist
+    if (vertexMap.find(v) == vertexMap.end() || vertexMap.find(w) == vertexMap.end()) {
+        cerr << "error: vertex not found" << endl;
+        return false;
+    }
+    
+    Vertex* vertex1 = vertexMap[v];
+    Vertex* vertex2 = vertexMap[w];
+    
+    // check if vertex2 appears in vertex1's adjacency list
+    if (adjacencyList.find(vertex1) != adjacencyList.end()) {
+        for (auto& neighbor : adjacencyList[vertex1]) {
+            if (neighbor.first == vertex2) {
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
+
+// find a path between two vertices using breadth first search algorithm
+vector<string> Graph::findPath(string start, string end) {
+    vector<string> path;
+    
+    // validate both vertices exist
+    if (vertexMap.find(start) == vertexMap.end() || vertexMap.find(end) == vertexMap.end()) {
+        cerr << "error: vertex not found" << endl;
+        return path;
+    }
+    
+    Vertex* startVertex = vertexMap[start];
+    Vertex* endVertex = vertexMap[end];
+    
+    // bfs to find shortest path between vertices
+    set<Vertex*> visited;
+    queue<Vertex*> q;
+    map<Vertex*, Vertex*> parent;
+    
+    // start bfs from the starting vertex
+    q.push(startVertex);
+    visited.insert(startVertex);
+    parent[startVertex] = nullptr;
+    
+    // explore vertices level by level
+    while (!q.empty()) {
+        Vertex* current = q.front();
+        q.pop();
+        
+        // check if we reached the destination
+        if (current == endVertex) {
+            // reconstruct path by following parent pointers
+            Vertex* node = endVertex;
+            while (node != nullptr) {
+                path.push_back(node->getValue());
+                node = parent[node];
+            }
+            reverse(path.begin(), path.end());
+            return path;
+        }
+        
+        // explore all neighbors of current vertex
+        if (adjacencyList.find(current) != adjacencyList.end()) {
+            for (auto& neighbor : adjacencyList[current]) {
+                Vertex* neighborVertex = neighbor.first;
+                
+                // mark unvisited neighbor and add to queue
+                if (visited.find(neighborVertex) == visited.end()) {
+                    visited.insert(neighborVertex);
+                    parent[neighborVertex] = current;
+                    q.push(neighborVertex);
+                }
+            }
+        }
+    }
+    
+    // no path found between vertices
+    return path;
 }
