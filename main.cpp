@@ -1,4 +1,6 @@
 #include "Graph.h"
+#include "Vertex.h"
+#include "Edge.h"
 #include <iostream>
 #include <string>
 
