@@ -1,5 +1,6 @@
 #include "Vertex.h"
 #include "Edge.h"
+#include <algorithm>
 
 // Vertex.cpp - implements the vertex class methods for managing node data and connections
 
@@ -20,6 +21,11 @@ void Vertex::addIncidentEdge(Edge* e) {
 // return the collection of all edges connected to this vertex
 vector<Edge*> Vertex::getIncidentEdges() {
     return incidentEdgeList;
+}
+
+// remove an edge from this vertex's incident edge list
+void Vertex::removeIncidentEdge(Edge* e) {
+    incidentEdgeList.erase(remove(incidentEdgeList.begin(), incidentEdgeList.end(), e), incidentEdgeList.end());
 }
 
 // check if another vertex is a neighbor by looking through incident edges

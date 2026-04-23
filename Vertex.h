@@ -28,6 +28,9 @@ public:
     // return all edges connected to this vertex
     vector<Edge*> getIncidentEdges();
     
+    // remove an edge from this vertex's incident edge list
+    void removeIncidentEdge(Edge* e);
+    
     // check if another vertex is directly connected to this one
     bool isAdjacentTo(Vertex* v);
 };

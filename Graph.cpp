@@ -252,12 +252,9 @@ void Graph::eraseEdge(string v, string w) {
         return;
     }
     
-    // remove edge from both vertices incident lists
-    vector<Edge*>& v1Edges = const_cast<vector<Edge*>&>(v1->getIncidentEdges());
-    v1Edges.erase(remove(v1Edges.begin(), v1Edges.end(), edgeToRemove), v1Edges.end());
-    
-    vector<Edge*>& v2Edges = const_cast<vector<Edge*>&>(v2->getIncidentEdges());
-    v2Edges.erase(remove(v2Edges.begin(), v2Edges.end(), edgeToRemove), v2Edges.end());
+    // remove edge from both vertices incident lists using the remove method
+    v1->removeIncidentEdge(edgeToRemove);
+    v2->removeIncidentEdge(edgeToRemove);
     
     // remove edge from adjacency list
     auto& adj1 = adjacencyList[v1];
