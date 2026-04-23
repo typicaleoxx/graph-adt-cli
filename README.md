@@ -161,8 +161,8 @@ Stadium BusStop 4.72
 | Greeting           | -                    | Hello! + Thank you message  | ✓ PASS |
 | Menu Display       | -                    | 4 options + exit            | ✓ PASS |
 | Incident Edges     | USF                  | 3 edges with format         | ✓ PASS |
-| Path (2 vertices)  | USF→Starbucks        | Error: min 3 vertices       | ✓ PASS |
-| Path (3+ vertices) | USF→BusStop          | USF to Starbucks to BusStop | ✓ PASS |
+| Path (2 vertices)  | USF-Starbucks        | Error: min 3 vertices       | ✓ PASS |
+| Path (3+ vertices) | USF-BusStop          | USF to Starbucks to BusStop | ✓ PASS |
 | Insert Edge        | Publix-BusStop (5.5) | Edge inserted               | ✓ PASS |
 | Erase Vertex       | Stadium              | Vertex removed              | ✓ PASS |
 | Error Handling     | InvalidVertex        | error: vertex not found     | ✓ PASS |
